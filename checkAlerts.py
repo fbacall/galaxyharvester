@@ -103,8 +103,8 @@ def sendAlertMail(conn, userID, msgText, link, alertID, alertTitle):
 			message['From'] = mailInfo.ALERTMAIL_USER
 			message['To'] = email
 			message['Subject'] = "".join(("Galaxy Harvester ", alertTitle))
-			message.set_content("".join(("Hello ", userID, ",\n\n", msgText, "\n\n", link, "\n\n You can manage your alerts at http://galaxyharvester.net/myAlerts.py\n")))
-			message.add_alternative("".join(("<div><img src='http://galaxyharvester.net/images/ghLogoLarge.png'/></div><p>Hello ", userID, ",</p><br/><p>", msgText.replace("\n", "<br/>"), "</p><p><a style='text-decoration:none;' href='", link, "'><div style='width:170px;font-size:18px;font-weight:600;color:#feffa1;background-color:#003344;padding:8px;margin:4px;border:1px solid black;'>View in Galaxy Harvester</div></a><br/>or copy and paste link: ", link, "</p><br/><p>You can manage your alerts at <a href='http://galaxyharvester.net/myAlerts.py'>http://galaxyharvester.net/myAlerts.py</a></p><p>-Galaxy Harvester Bot</p>")), subtype='html')
+			message.set_content("".join(("Hello ", userID, ",\n\n", msgText, "\n\n", link, "\n\n You can manage your alerts at https://galaxyharvester.net/myAlerts.py\n")))
+			message.add_alternative("".join(("<div><img src='https://galaxyharvester.net/images/ghLogoLarge.png'/></div><p>Hello ", userID, ",</p><br/><p>", msgText.replace("\n", "<br/>"), "</p><p><a style='text-decoration:none;' href='", link, "'><div style='width:170px;font-size:18px;font-weight:600;color:#feffa1;background-color:#003344;padding:8px;margin:4px;border:1px solid black;'>View in Galaxy Harvester</div></a><br/>or copy and paste link: ", link, "</p><br/><p>You can manage your alerts at <a href='https://galaxyharvester.net/myAlerts.py'>https://galaxyharvester.net/myAlerts.py</a></p><p>-Galaxy Harvester Bot</p>")), subtype='html')
 			mailer = smtplib.SMTP(mailInfo.MAIL_HOST)
 			mailer.login(mailInfo.ALERTMAIL_USER, mailInfo.MAIL_PASS)
 			try:
@@ -170,7 +170,7 @@ def checkSpawnAlerts(conn, spawnName, alertValue, galaxy, enteredBy, stats, gala
 			else:
 				typeGroup = ghNames.getResourceGroupName(row[14])
 
-			addAlert(row[0], row[1], typeGroup + alertMessage, 'http://galaxyharvester.net/resource.py/' + str(galaxy) + '/' + spawnName, 'Resource Spawn Alert')
+			addAlert(row[0], row[1], typeGroup + alertMessage, '/resource.py/' + str(galaxy) + '/' + spawnName, 'Resource Spawn Alert')
 
 		row = cursor.fetchone()
 	cursor.close()
@@ -180,7 +180,7 @@ def checkDespawnAlerts(conn, spawnID, spawnName, galaxyName, unavailable, galaxy
 	cursor.execute('SELECT userID, despawnAlert FROM tFavorites WHERE itemID={0} AND despawnAlert > 0;'.format(spawnID))
 	row = cursor.fetchone()
 	while row != None:
-		addAlert(row[0], row[1], 'Resource named ' + spawnName + ' on ' + galaxyName + ' despawned at ' + str(unavailable), 'http://galaxyharvester.net/resource.py/' + str(galaxy) + '/' + spawnName, 'Resource Despawn Alert')
+		addAlert(row[0], row[1], 'Resource named ' + spawnName + ' on ' + galaxyName + ' despawned at ' + str(unavailable), '/resource.py/' + str(galaxy) + '/' + spawnName, 'Resource Despawn Alert')
 		row = cursor.fetchone()
 
 	cursor.close()
@@ -202,7 +202,7 @@ def checkServerBest(conn, spawnID, spawnName, galaxy, galaxyName):
 		row = cursor.fetchone()
 		# Add alert for each user watching for profession server bests hit by this spawn
 		while row != None:
-			addAlert(row[0], row[1], bestStr, ''.join(('http://galaxyharvester.net/resource.py/', str(galaxy), '/', spawnName)), ''.join((row[2], ' Server best alert for ', galaxyName)))
+			addAlert(row[0], row[1], bestStr, ''.join(('/resource.py/', str(galaxy), '/', spawnName)), ''.join((row[2], ' Server best alert for ', galaxyName)))
 			row = cursor.fetchone()
 
 		cursor.close()
@@ -213,7 +213,7 @@ def checkServerBest(conn, spawnID, spawnName, galaxy, galaxyName):
 		row = cursor.fetchone()
 		# Add alert for each user watching for schematic server bests hit by this spawn
 		while row != None:
-			addAlert(row[0], row[1], '\n'.join(result[1][x][row[2]]), ''.join(('http://galaxyharvester.net/resource.py/', str(galaxy), '/', spawnName)), ''.join((row[3], ' Server best alert for ', galaxyName)))
+			addAlert(row[0], row[1], '\n'.join(result[1][x][row[2]]), ''.join(('/resource.py/', str(galaxy), '/', spawnName)), ''.join((row[3], ' Server best alert for ', galaxyName)))
 			row = cursor.fetchone()
 
 		cursor.close()
